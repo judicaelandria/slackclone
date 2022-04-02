@@ -6,7 +6,7 @@ import { MutationResolvers } from "src/generated/graphql";
 
 const register: MutationResolvers["register"] = async (
   _: any,
-  { input: { email, password } },
+  { input: { email, password, fullname } },
   ctx: IContext
 ) => {
   const user = await ctx.prisma.user.findUnique({ where: { email } });
@@ -18,7 +18,7 @@ const register: MutationResolvers["register"] = async (
     );
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await ctx.prisma.user.create({
-    data: { email, password: hashedPassword },
+    data: { email, password: hashedPassword, fullname },
   });
   const token = await jwt.sign(
     { userId: newUser.id },

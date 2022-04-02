@@ -17,8 +17,9 @@ const main = async () => {
     ),
     resolvers: resolvers,
     context: ({ req, res }) => {
-      const token = req.get("Authorization") || "";
-      const userId = getUser(token);
+      const token = req.get("authorization")?.slice(7) || "";
+      // @ts-expect-error
+      const userId = getUser(token)?.userId;
       return {
         req,
         res,

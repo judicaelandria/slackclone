@@ -2,7 +2,7 @@ scalar Date
 
 type Mutation {
   login(input: UserInput!): UserPayload!
-  register(input: UserInput!): UserPayload!
+  register(input: RegisterUserInput!): UserPayload!
 }
 
 type Query {
@@ -18,11 +18,18 @@ type UserPayload {
 type User {
   id: ID!
   email: String!
+  fullname: String!
   createdAt: Date!
   updatedAt: Date!
 }
 
 # Input
+
+input RegisterUserInput {
+  email: String!
+  fullname: String!
+  password: String!
+}
 
 input UserInput {
   email: String!
