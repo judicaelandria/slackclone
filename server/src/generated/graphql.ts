@@ -28,7 +28,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationRegisterArgs = {
-  input: UserInput;
+  input: RegisterUserInput;
 };
 
 export type Query = {
@@ -36,10 +36,17 @@ export type Query = {
   me: User;
 };
 
+export type RegisterUserInput = {
+  email: Scalars['String'];
+  fullname: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['Date'];
   email: Scalars['String'];
+  fullname: Scalars['String'];
   id: Scalars['ID'];
   updatedAt: Scalars['Date'];
 };
@@ -128,6 +135,7 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  RegisterUserInput: RegisterUserInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
@@ -141,6 +149,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Mutation: {};
   Query: {};
+  RegisterUserInput: RegisterUserInput;
   String: Scalars['String'];
   User: User;
   UserInput: UserInput;
@@ -163,6 +172,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fullname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
