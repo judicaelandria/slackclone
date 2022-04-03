@@ -2,8 +2,8 @@ import { pubsub } from "../../index";
 import { SubscriptionResolvers } from "src/generated/graphql";
 
 const messages: SubscriptionResolvers["messages"] = {
-  subscribe: (_, ___, __) => {
-    const asyncIterator = pubsub.asyncIterator("message");
+  subscribe: (_, { receiverId }, __) => {
+    const asyncIterator = pubsub.asyncIterator(receiverId);
     return {
       [Symbol.asyncIterator]() {
         return asyncIterator;

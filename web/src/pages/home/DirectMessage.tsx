@@ -57,11 +57,11 @@ const DirectMessage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            {allMessages?.map((message) => (
+            {allMessages?.map((message, idx) => (
               <Message
                 fullname={message.sentBy?.fullname || ""}
                 content={message.content}
-                key={message.id}
+                key={idx}
               />
             ))}
           </div>

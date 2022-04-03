@@ -6,9 +6,9 @@ import {
 import { GET_MESSAGES } from "../graphql/queries/messages";
 
 export const useGetMessages = (receiverId: string) => {
-  const { data, loading } = useQuery<
+  const { data, loading, subscribeToMore } = useQuery<
     GetMessagesQuery,
     GetMessagesQueryVariables
   >(GET_MESSAGES, { variables: { receiverId } });
-  return { messages: data?.messages, loading };
+  return { messages: data?.messages, loading, subscribeToMore };
 };
