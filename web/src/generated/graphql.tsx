@@ -244,6 +244,13 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, email: string, fullname: string }> };
 
+export type GetChannelSubscriptionSubscriptionVariables = Exact<{
+  channelName: Scalars['String'];
+}>;
+
+
+export type GetChannelSubscriptionSubscription = { __typename?: 'Subscription', channelMessages: Array<{ __typename?: 'ChannelMessage', content: string, sentBy?: { __typename?: 'User', fullname: string } | null }> };
+
 export type GetMessagesSubscriptionSubscriptionVariables = Exact<{
   receiverId: Scalars['ID'];
 }>;
@@ -708,6 +715,39 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetChannelSubscriptionDocument = gql`
+    subscription GetChannelSubscription($channelName: String!) {
+  channelMessages(channelName: $channelName) {
+    content
+    sentBy {
+      fullname
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetChannelSubscriptionSubscription__
+ *
+ * To run a query within a React component, call `useGetChannelSubscriptionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetChannelSubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChannelSubscriptionSubscription({
+ *   variables: {
+ *      channelName: // value for 'channelName'
+ *   },
+ * });
+ */
+export function useGetChannelSubscriptionSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetChannelSubscriptionSubscription, GetChannelSubscriptionSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetChannelSubscriptionSubscription, GetChannelSubscriptionSubscriptionVariables>(GetChannelSubscriptionDocument, options);
+      }
+export type GetChannelSubscriptionSubscriptionHookResult = ReturnType<typeof useGetChannelSubscriptionSubscription>;
+export type GetChannelSubscriptionSubscriptionResult = Apollo.SubscriptionResult<GetChannelSubscriptionSubscription>;
 export const GetMessagesSubscriptionDocument = gql`
     subscription GetMessagesSubscription($receiverId: ID!) {
   messages(receiverId: $receiverId) {

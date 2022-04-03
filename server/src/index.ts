@@ -17,7 +17,6 @@ import cors from "cors";
 export const pubsub = new PubSub();
 const main = async () => {
   // Initiating prisma for apollo context
-  const prisma = new PrismaClient();
   const typeDefs = fs.readFileSync(
     path.join(__dirname, "graphql/schema.graphql"),
     "utf-8"
@@ -46,6 +45,7 @@ const main = async () => {
     wsServer
   );
 
+  const prisma = new PrismaClient();
   const server = new ApolloServer({
     schema,
     plugins: [
@@ -60,17 +60,16 @@ const main = async () => {
         },
       },
     ],
-    context: ({ req, res }) => {
-      const token = req.get("authorization")?.slice(7) || "";
-      const userId = getUser(token)?.userId;
-      return {
-        req,
-        res,
-        prisma,
-        userId,
-        pubsub,
-      };
-    },
+    context: ({ req, res }) => ({
+      req,
+      res,
+      prisma,
+      userId:
+        req && req.get("authorization")
+          ? getUser(req.get("authorization")?.slice(7) || "")?.userId
+          : "",
+      pubsub,
+    }),
   });
   await server.start();
   server.applyMiddleware({ app, cors: false });

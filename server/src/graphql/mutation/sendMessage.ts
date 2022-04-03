@@ -22,7 +22,7 @@ const sendMessage: MutationResolvers["sendMessage"] = async (
     where: { sentBy: { id: ctx.userId }, to: { id: receiverId } },
     include: { sentBy: true },
   });
-  ctx.pubsub.publish("message", messages);
+  ctx.pubsub.publish(receiverId, messages);
   return newMessage;
 };
 export default sendMessage;

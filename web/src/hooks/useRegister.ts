@@ -20,7 +20,10 @@ export const useRegister = () => {
     onCompleted: (data) => {
       const date = new Date();
       date.setTime(date.getTime() + 120 * 60 * 1000);
-      setCookie("slack-token", data.register.token, { expires: date });
+      setCookie("slack-token", data.register.token, {
+        expires: date,
+        path: "/",
+      });
       navigate("/");
     },
   });
