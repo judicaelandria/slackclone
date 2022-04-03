@@ -17,6 +17,6 @@ Implemented features:
 - Auth(Login, Register, logout)
 - Create Channel
 - Join a private channel
-- send message message to channel
+- send message message to channel(**realtime**)
 - send message to users (**realtime**)
 - notification sound
