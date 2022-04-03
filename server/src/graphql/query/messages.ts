@@ -21,6 +21,7 @@ const messages: QueryResolvers["messages"] = async (
     },
     include: { sentBy: true, to: true },
   });
+  ctx.pubsub.publish(receiverId, messages);
   return messages;
 };
 export default messages;

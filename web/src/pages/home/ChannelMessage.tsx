@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Message } from "../../components/Home";
 import { Access } from "../../generated/graphql";
 import {
+  useChannelMessageSub,
   useGetChannel,
   useGetChannelMessages,
   useGetMe,
@@ -19,7 +20,16 @@ const ChannelMessage = () => {
   const { me } = useGetMe();
 
   const { messages } = useGetChannelMessages(title);
+  const { subChannelMessages } = useChannelMessageSub(title);
   const { joinChannel } = useJoinChannel();
+
+  const allMessages = React.useMemo(() => {
+    if (subChannelMessages?.length && messages?.length) {
+      return [...messages, ...subChannelMessages];
+    }
+    return messages;
+  }, [messages, subChannelMessages]);
+
   const isMember =
     channel?.access === Access.Private
       ? channel?.members?.filter((member) => member.id === me?.id).length !== 0
@@ -63,7 +73,7 @@ const ChannelMessage = () => {
             <div className="h-90%">
               {loading ? <span>Loading channel...</span> : null}
               <div className="flex flex-col gap-4">
-                {messages?.map((message, idx) => (
+                {allMessages?.map((message, idx) => (
                   <Message
                     fullname={message.sentBy?.fullname || ""}
                     content={message.content}

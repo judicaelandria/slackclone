@@ -7,9 +7,9 @@ import {
 import { GET_CHANNEL_MESSAGES } from "../../graphql/queries/channelMessages";
 
 export const useGetChannelMessages = (channelName: string) => {
-  const { data, loading } = useQuery<
+  const { data, loading, subscribeToMore } = useQuery<
     GetChannelMessagesQuery,
     GetChannelMessagesQueryVariables
   >(GET_CHANNEL_MESSAGES, { variables: { channelName } });
-  return { messages: data?.channelMessages, loading };
+  return { messages: data?.channelMessages, loading, subscribeToMore };
 };

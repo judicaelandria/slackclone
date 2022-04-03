@@ -8,7 +8,9 @@ const channelMessages: QueryResolvers["channelMessages"] = async (
 ) => {
   const messages = await ctx.prisma.channelMessage.findMany({
     where: { channel: { name: channelName } },
+    include: { sentBy: true },
   });
+  ctx.pubsub.publish("channelMessage", messages);
   return messages;
 };
 export default channelMessages;
