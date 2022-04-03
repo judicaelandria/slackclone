@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "../../Avatar";
 
-interface MessageMenuProps {
+interface MessageListProps {
   name: string;
 }
 
-export const MessageMenu = ({ name }: MessageMenuProps) => {
+export const UsersList = ({ name }: MessageListProps) => {
   return (
     <Link
       to={`direct/${name.trim()}`}
@@ -13,7 +13,7 @@ export const MessageMenu = ({ name }: MessageMenuProps) => {
     >
       <div className="flex items-center gap-4 px-4 text-white/60">
         <Avatar fullname={name} />
-        <h4>{name}</h4>
+        <h4 className="text-sm truncate">{name}</h4>
       </div>
     </Link>
   );

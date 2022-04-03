@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import { pubsub } from "../index";
 
 export interface IContext {
   prisma: PrismaClient<
@@ -7,4 +8,5 @@ export interface IContext {
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >;
   userId: string;
+  pubsub: typeof pubsub;
 }

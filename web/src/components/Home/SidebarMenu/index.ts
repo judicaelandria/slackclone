@@ -1,2 +1,2 @@
-export * from "./ChannelMenu";
-export * from "./MessageMenu";
+export * from "./ChannelList";
+export * from "./UsersList";

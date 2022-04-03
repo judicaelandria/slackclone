@@ -9,7 +9,8 @@ module.exports = {
         300: "300px",
       },
       height: {
-        sidebar: "95vh",
+        95: "95vh",
+        "90%": "90%",
       },
       maxHeight: {
         sidebar: "95vh",
@@ -18,9 +19,6 @@ module.exports = {
       minHeight: {
         textarea: "80px",
         80: "80vh",
-      },
-      height: {
-        "90%": "90%",
       },
       colors: {
         darkBrown: "#361836",

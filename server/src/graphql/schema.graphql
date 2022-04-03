@@ -1,12 +1,23 @@
 scalar Date
 
+enum Access {
+  PUBLIC
+  PRIVATE
+}
+
 type Mutation {
   login(input: UserInput!): UserPayload!
   register(input: RegisterUserInput!): UserPayload!
+  createChannel(name: String!, access: Access!): Channel!
+  sendChannelMessage(content: String!, channelId: ID!): ChannelMessage!
 }
 
 type Query {
   me: User!
+  users: [User!]!
+  channelMessages(channelId: String!): ChannelMessage!
+  channels: [Channel!]!
+  channel(channelName: String!): Channel
 }
 
 # Type
@@ -21,6 +32,27 @@ type User {
   fullname: String!
   createdAt: Date!
   updatedAt: Date!
+}
+
+type Channel {
+  id: ID!
+  name: String
+  createdAt: Date!
+  access: String!
+  members: [User!]
+  messages: [ChannelMessage!]
+}
+
+type ChannelMessage {
+  id: ID!
+  sentBy: User
+  content: String!
+  channel: Channel
+}
+
+# Subscription
+type Subscription {
+  channelMessage(channelName: String!): Channel!
 }
 
 # Input

@@ -15,7 +15,8 @@ const Register = () => {
     setRegisterForm({ ...registerForm, [name]: value });
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     register({ variables: { ...registerForm } });
   };
 
@@ -86,7 +87,7 @@ const Register = () => {
             type="submit"
             className="w-full h-11 bg-brown rounded-md text-white"
           >
-            Sign up
+            {loading ? "Loading" : "Sign up"}
           </button>
         </form>
       </div>

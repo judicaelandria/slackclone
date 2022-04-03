@@ -1,12 +1,16 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
+import { Access } from "../../../generated/graphql";
 
-interface ChannelMenuProps {
-  role?: "public" | "private";
+interface ChannelListProps {
+  access?: string;
   name: string;
 }
 
-export const ChannelMenu = ({ role = "public", name }: ChannelMenuProps) => {
+export const ChannelList = ({
+  access = Access.Public,
+  name,
+}: ChannelListProps) => {
   return (
     <Link
       to={`channel/${name.trim()}`}
@@ -14,7 +18,7 @@ export const ChannelMenu = ({ role = "public", name }: ChannelMenuProps) => {
     >
       <div className="flex items-center gap-4 px-4 text-white/60">
         <span>
-          {role === "public" ? "#" : <LockClosedIcon className="w-3 h-3" />}
+          {access === "PUBLIC" ? "#" : <LockClosedIcon className="w-3 h-3" />}
         </span>
         <h4>{name}</h4>
       </div>
