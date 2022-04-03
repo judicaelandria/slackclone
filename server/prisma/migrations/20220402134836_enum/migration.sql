@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Channel" ALTER COLUMN "access" SET DEFAULT E'PUBLIC';

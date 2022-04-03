@@ -11,10 +11,52 @@ datasource db {
 }
 
 model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  fullname        String
+  password        String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  Channel         Channel?         @relation(fields: [channelId], references: [id])
+  channelId       String?
+  ChannelMessage  ChannelMessage[]
+  SentMessage     Message[]        @relation(name: "Sender")
+  ReceivedMessage Message[]        @relation(name: "Receiver")
+  Message         Message[]
+}
+
+model Message {
   id        String   @id @default(uuid())
-  email     String   @unique
-  fullname  String
-  password  String
+  sentBy    User     @relation(name: "Sender", fields: [sentById], references: [id])
+  sentById  String
+  to        User     @relation(name: "Receiver", fields: [toId], references: [id])
+  toId      String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  content   String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model Channel {
+  id        String           @id @default(uuid())
+  name      String           @unique
+  access    Access           @default(PUBLIC)
+  members   User[]
+  messages  ChannelMessage[]
+  createdAt DateTime         @default(now())
+}
+
+model ChannelMessage {
+  id        String   @id @default(uuid())
+  sentBy    User     @relation(fields: [sentById], references: [id])
+  sentById  String
+  content   String
+  channel   Channel  @relation(fields: [channelId], references: [id])
+  channelId String
+  createdAt DateTime @default(now())
+}
+
+enum Access {
+  PUBLIC
+  PRIVATE
 }

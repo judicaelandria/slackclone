@@ -3,7 +3,13 @@ import * as jwt from "jsonwebtoken";
 const getUser = (token: string) => {
   try {
     if (token) {
-      return jwt.verify(token, process.env.JWT_SECRET || "");
+      const data = jwt.verify(token, process.env.JWT_SECRET || "") as Record<
+        string,
+        any
+      >;
+      return {
+        userId: data.userId,
+      };
     }
     return null;
   } catch (error) {

@@ -16,7 +16,7 @@ const login: MutationResolvers["login"] = async (
       "USER_NOT_FOUND",
       undefined
     );
-  const userPassword = bcrypt.compare(password, user.password);
+  const userPassword = await bcrypt.compare(password, user.password);
   if (!userPassword)
     throw new ApolloError(
       "Incorrect password",

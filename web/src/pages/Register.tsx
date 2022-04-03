@@ -8,14 +8,15 @@ const Register = () => {
     password: "",
     fullname: "",
   });
-  const { register, loading } = useRegister();
+  const { register, loading, error } = useRegister();
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRegisterForm({ ...registerForm, [name]: value });
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     register({ variables: { ...registerForm } });
   };
 
@@ -33,6 +34,7 @@ const Register = () => {
             </Link>
           </span>
         </div>
+        <span className="text-sm text-red-500">{error?.message}</span>
         <form className="flex flex-col gap-6" onSubmit={onSubmit}>
           <label
             htmlFor="fullname"
@@ -86,7 +88,7 @@ const Register = () => {
             type="submit"
             className="w-full h-11 bg-brown rounded-md text-white"
           >
-            Sign up
+            {loading ? "Loading" : "Sign up"}
           </button>
         </form>
       </div>
