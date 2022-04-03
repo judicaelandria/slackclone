@@ -6,14 +6,14 @@ const sendChannelMessage: MutationResolvers["sendChannelMessage"] = async (
   { channelId, content },
   ctx: IContext
 ) => {
-  const channel = await ctx.prisma.channel.findUnique({
-    where: { id: channelId },
+  const channelMessages = await ctx.prisma.channelMessage.findMany({
+    where: { channel: { id: channelId } },
   });
   const newMessage = await ctx.prisma.channelMessage.create({
     data: {
       content,
       channel: {
-        connect: { id: channel!.id },
+        connect: { id: channelId },
       },
       sentBy: {
         connect: { id: ctx.userId },
@@ -24,7 +24,7 @@ const sendChannelMessage: MutationResolvers["sendChannelMessage"] = async (
       sentBy: true,
     },
   });
-  ctx.pubsub.publish(channel!.name, newMessage);
+  ctx.pubsub.publish(channelId, [...channelMessages, newMessage]);
   return newMessage;
 };
 export default sendChannelMessage;

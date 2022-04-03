@@ -2,8 +2,8 @@ import { gql, useMutation } from "@apollo/client";
 import {
   CreateChannelMutation,
   CreateChannelMutationVariables,
-} from "../generated/graphql";
-import { CREATE_CHANNEL } from "../graphql/mutations/createChannel";
+} from "../../generated/graphql";
+import { CREATE_CHANNEL } from "../../graphql/mutations/createChannel";
 
 export const useCreateChannel = (callback?: () => void) => {
   const [createChannel, { loading }] = useMutation<

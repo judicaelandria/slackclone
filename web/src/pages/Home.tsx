@@ -70,7 +70,7 @@ const Home = () => {
             <h4 className="text-base text-white/60 px-4">Direct Messages</h4>
             <div className="flex flex-col">
               {users?.map((user) => (
-                <UsersList name={user.fullname} key={user.email} />
+                <UsersList name={user.fullname} key={user.email} id={user.id} />
               ))}
             </div>
           </div>

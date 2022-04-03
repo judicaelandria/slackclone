@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "../components/Button";
 import { useLogin } from "../hooks";
 
 const Login = () => {
@@ -7,7 +8,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const { login, loading } = useLogin();
+  const { login, loading, error } = useLogin();
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -33,6 +34,7 @@ const Login = () => {
             </Link>
           </span>
         </div>
+        <span className="text-sm text-red-500">{error?.message}</span>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <label
             htmlFor="email"
@@ -66,13 +68,7 @@ const Login = () => {
               required
             />
           </label>
-          <button
-            type="submit"
-            className="w-full h-11 bg-brown rounded-md text-white"
-            disabled={loading}
-          >
-            {loading ? "Loading" : "Log In"}
-          </button>
+          <Button label="Login" loading={loading && !error} />
         </form>
       </div>
     </div>

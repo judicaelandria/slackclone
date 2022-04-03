@@ -10,14 +10,17 @@ type Mutation {
   register(input: RegisterUserInput!): UserPayload!
   createChannel(name: String!, access: Access!): Channel!
   sendChannelMessage(content: String!, channelId: ID!): ChannelMessage!
+  sendMessage(content: String!, receiverId: ID!): Message!
+  joinChannel(name: String!): Channel!
 }
 
 type Query {
   me: User!
   users: [User!]!
-  channelMessages(channelId: String!): ChannelMessage!
+  channelMessages(channelName: String!): [ChannelMessage!]!
   channels: [Channel!]!
   channel(channelName: String!): Channel
+  messages(receiverId: ID!): [Message!]!
 }
 
 # Type
@@ -50,9 +53,17 @@ type ChannelMessage {
   channel: Channel
 }
 
+type Message {
+  id: ID!
+  sentBy: User
+  to: User
+  content: String!
+}
+
 # Subscription
 type Subscription {
-  channelMessage(channelName: String!): Channel!
+  channelMessages(channelName: String!): [ChannelMessage!]!
+  messages(receiverId: ID!): [Message!]!
 }
 
 # Input

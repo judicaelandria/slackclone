@@ -36,7 +36,15 @@ const main = async () => {
     server: httpServer,
     path: "/graphql",
   });
-  const serverCleanup = useServer({ schema }, wsServer);
+
+  const serverCleanup = useServer(
+    {
+      schema,
+      onConnect: () => console.log("connected"),
+      onDisconnect: () => console.log("Disconnected"),
+    },
+    wsServer
+  );
 
   const server = new ApolloServer({
     schema,
@@ -54,7 +62,6 @@ const main = async () => {
     ],
     context: ({ req, res }) => {
       const token = req.get("authorization")?.slice(7) || "";
-      // @ts-expect-error
       const userId = getUser(token)?.userId;
       return {
         req,

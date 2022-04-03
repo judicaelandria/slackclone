@@ -26,10 +26,29 @@ const httpLink = createHttpLink({
 const wsLink = new GraphQLWsLink(
   createClient({
     url: "ws://localhost:4000/graphql",
+    keepAlive: 10_000,
+    connectionParams: () => {
+      return {
+        Authorization: `Bearer ${token}`,
+      };
+    },
   })
 );
-
-const splitLink = split(
+// authLink.concat(splitLink),
+const authLink = setContext((_, { headers }) => {
+  const token =
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("slack-token="))
+      ?.split("=")[1] ?? "";
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+const link = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
@@ -38,20 +57,11 @@ const splitLink = split(
     );
   },
   wsLink,
-  httpLink
+  authLink.concat(httpLink)
 );
 
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-});
-
 export const client = new ApolloClient({
-  link: authLink.concat(splitLink),
+  link,
   cache: new InMemoryCache(),
 });
 

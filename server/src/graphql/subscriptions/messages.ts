@@ -1,11 +1,12 @@
 import { pubsub } from "../../index";
 import { SubscriptionResolvers } from "src/generated/graphql";
 
-const channelMessage: SubscriptionResolvers["channelMessage"] = {
-  subscribe: (_, { channelName }, __) => {
+const messages: SubscriptionResolvers["messages"] = {
+  subscribe: (_, ___, __) => {
+    const asyncIterator = pubsub.asyncIterator("message");
     return {
       [Symbol.asyncIterator]() {
-        return pubsub.asyncIterator(channelName);
+        return asyncIterator;
       },
     };
   },
@@ -13,4 +14,5 @@ const channelMessage: SubscriptionResolvers["channelMessage"] = {
     return payload;
   },
 };
-export default channelMessage;
+
+export default messages;

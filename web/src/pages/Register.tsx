@@ -8,7 +8,7 @@ const Register = () => {
     password: "",
     fullname: "",
   });
-  const { register, loading } = useRegister();
+  const { register, loading, error } = useRegister();
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -34,6 +34,7 @@ const Register = () => {
             </Link>
           </span>
         </div>
+        <span className="text-sm text-red-500">{error?.message}</span>
         <form className="flex flex-col gap-6" onSubmit={onSubmit}>
           <label
             htmlFor="fullname"

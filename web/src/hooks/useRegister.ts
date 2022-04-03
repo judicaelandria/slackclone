@@ -1,4 +1,5 @@
-import { useMutation } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
+import React from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,19 +9,19 @@ import {
 import { REGISTER } from "../graphql/mutations/register";
 
 export const useRegister = () => {
+  const [error, setError] = React.useState<ApolloError | undefined>();
   const [_, setCookie] = useCookies(["slack-token"]);
   const navigate = useNavigate();
-  const [register, { loading, error }] = useMutation<
+  const [register, { loading }] = useMutation<
     RegisterMutation,
     RegisterMutationVariables
   >(REGISTER, {
-    onError: (error) => console.log({ error }),
+    onError: (error) => setError(error),
     onCompleted: (data) => {
-      console.log({ data });
       const date = new Date();
       date.setTime(date.getTime() + 120 * 60 * 1000);
       setCookie("slack-token", data.register.token, { expires: date });
-      navigate("/login");
+      navigate("/");
     },
   });
   return { register, loading, error };
